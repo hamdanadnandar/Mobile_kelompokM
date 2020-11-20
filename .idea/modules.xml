@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tugas2prak.iml" filepath="$PROJECT_DIR$/tugas2prak.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/tugas2prak_android.iml" filepath="$PROJECT_DIR$/android/tugas2prak_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filterin.iml" filepath="$PROJECT_DIR$/filterin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/filterin_android.iml" filepath="$PROJECT_DIR$/android/filterin_android.iml" />
     </modules>
   </component>
 </project>
