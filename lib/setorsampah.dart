@@ -1,5 +1,6 @@
+import 'package:filterin/components/alerts.dart';
+import 'package:filterin/helper/setor-controller.dart';
 import 'package:flutter/material.dart';
-
 
 class SetorSampah extends StatefulWidget {
   @override
@@ -7,12 +8,53 @@ class SetorSampah extends StatefulWidget {
 }
 
 class _SetorSampah extends State<SetorSampah> {
-
+  DateTime pickedDate;
   String _valUang;
   String _valSampah;
-
+  TextEditingController berat = new TextEditingController();
   List _listUang = ["Tunai", "Transfer"];
-  List _listSampah = ["Plastik", "Kertas", "Benda Tajam", "Sandal"];
+  List _listSampah = ["Daun", "Sayuran dan buah", "sisa makanan", "kayu"];
+
+  _pickDate() async {
+   DateTime date = await showDatePicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year-5),
+      lastDate: DateTime(DateTime.now().year+5),
+      initialDate: pickedDate,
+    );
+    if(date != null)
+      setState(() {
+        pickedDate = date;
+      });
+      print(pickedDate.toString());
+  }
+
+  void storeData() async {
+    SetorC.store(_valUang, pickedDate.toString(), _valSampah, berat.text).then((res){
+      SomeAlerts.fClose();
+      if(res['status']=='ok' && res['status']!=null){
+        SomeAlerts.fSuccess(msg: res['msg']);
+        Navigator.pop(context);
+      }else{
+        if(res['pembayaran']!=null){
+          SomeAlerts.fFails(msg: res['pembayaran'][0]);
+        }else if(res['tanggal']!=null){
+          SomeAlerts.fFails(msg: res['tanggal'][0]);
+        }else if(res['jenis_sampah']!=null){
+          SomeAlerts.fFails(msg: res['jenis_sampah'][0]);
+        }else if(res['berat']!=null){
+          SomeAlerts.fFails(msg: res['berat'][0]);
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    pickedDate = DateTime.now();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +65,10 @@ class _SetorSampah extends State<SetorSampah> {
           title: Text("Setor Sampah"),
         ),
         body: Container(
-          child: Stack(alignment: Alignment.bottomCenter,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
               Container(
-//                height: MediaQuery.of(context).size.height,
-//                width: MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -38,17 +79,26 @@ class _SetorSampah extends State<SetorSampah> {
                       "Silahkan isi form di bawah ini :",
                       style: TextStyle(
                           color: Color(0xff3a653d),
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 120, bottom: 0, left: 0, right: 0),
+                margin: const EdgeInsets.only(
+                    top: 120, bottom: 0, left: 0, right: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    new Text("Pembayaran", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)) ,
+                    InkWell(
+                      onTap: (){
+                        _pickDate();
+                      },
+                      child: Text("Pembayaran",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                     DropdownButton(
                       hint: Text('Pilih Pembayaran'),
                       value: _valUang,
@@ -70,11 +120,14 @@ class _SetorSampah extends State<SetorSampah> {
               Container(
                   height: MediaQuery.of(context).size.height * 0.8,
                   width: MediaQuery.of(context).size.width * 0.8,
-                  child: Stack(alignment: Alignment.bottomCenter,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
                     children: <Widget>[
                       Column(
                         children: <Widget>[
-                          SizedBox(height: 100,),
+                          SizedBox(
+                            height: 100,
+                          ),
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 35, right: 10, bottom: 10, left: 10),
@@ -92,16 +145,23 @@ class _SetorSampah extends State<SetorSampah> {
                                     topLeft: Radius.circular(20),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 10),
-                                  child: TextField(
-                                    keyboardType: TextInputType.datetime,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Tanggal",
-                                      hintStyle: TextStyle(
-                                          color: Color(0xff222222), fontSize: 14),
+                                child: InkWell(
+                                  onTap: (){
+                                    _pickDate();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 40, right: 40, top: 10, bottom: 10),
+                                    child: TextField(
+                                      readOnly: true,
+                                      keyboardType: TextInputType.datetime,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Tanggal",
+                                        hintStyle: TextStyle(
+                                            color: Color(0xff222222),
+                                            fontSize: 14),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -109,11 +169,15 @@ class _SetorSampah extends State<SetorSampah> {
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.only(top: 40, bottom: 0, left: 0, right: 0),
+                            margin: const EdgeInsets.only(
+                                top: 40, bottom: 0, left: 0, right: 0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                new Text("Jenis Sampah", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)) ,
+                                new Text("Jenis Sampah",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold)),
                                 DropdownButton(
                                   hint: Text('Jenis Sampah'),
                                   value: _valSampah,
@@ -153,12 +217,14 @@ class _SetorSampah extends State<SetorSampah> {
                                   padding: EdgeInsets.only(
                                       left: 20, right: 20, top: 10, bottom: 10),
                                   child: TextField(
+                                    controller: berat,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Berat(Kg)",
                                       hintStyle: TextStyle(
-                                          color: Color(0xff222222), fontSize: 14),
+                                          color: Color(0xff222222),
+                                          fontSize: 14),
                                     ),
                                   ),
                                 ),
@@ -178,18 +244,26 @@ class _SetorSampah extends State<SetorSampah> {
                                     'SETOR',
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  onPressed: () {}
-                              )
-                          ),
+                                  onPressed: () {
+                                    if(
+                                      _valUang==''|| _valUang==null ||
+                                      pickedDate.toString()=='' || pickedDate.toString()==null ||
+                                      _valSampah=='' || _valSampah==null ||
+                                      berat.text=='' || berat.text==null){
+                                      SomeAlerts.fFails(msg: "Silahkan masukkan semua data");
+                                    }else{
+                                      SomeAlerts.fOpen(msg: "Menyetor sampah \n Silahkan tunggu", isClosesable: false);
+                                      storeData();
+                                    }
+                                  })),
                         ],
                       )
                     ],
-                  ))],
+                  ))
+            ],
           ),
-
         ),
       ),
     );
   }
-  }
-
+}

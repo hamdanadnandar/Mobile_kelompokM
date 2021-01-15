@@ -1,5 +1,9 @@
+import 'package:filterin/alert.dart';
 import 'package:filterin/beranda.dart';
+import 'package:filterin/components/alerts.dart';
+import 'package:filterin/helper/auth-controller.dart';
 import 'package:filterin/navbar.dart';
+import 'package:filterin/route.dart';
 import 'package:flutter/material.dart';
 import 'package:filterin/Screens/Login/components/background.dart';
 import 'package:filterin/Screens/Signup/signup_screen.dart';
@@ -8,10 +12,19 @@ import 'package:filterin/components/rounded_button.dart';
 import 'package:filterin/components/rounded_input_field.dart';
 import 'package:filterin/components/rounded_password_field.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({
     Key key,
   }) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +45,27 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.05),
             RoundedInputField(
+              controller : email,
               hintText: "E-mail",
               onChanged: (value) {},
             ),
             RoundedPasswordField(
+              controller: password,
               onChanged: (value) {},
             ),
             RoundedButton(
               text: "LOGIN",
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NavBawah()),
-                );
+                SomeAlerts.fOpen(isClosesable: false,msg: "Loading");
+                AuthC.login(email.text, password.text).then((value){
+                  if(value['status']=='failed'){
+                    SomeAlerts.fFails(msg: value['msg']);
+                    // FilterinAlert.show(msg: value['msg'], type: 2);
+                  }else{
+                    Routes.rmPage(context, Beranda());
+                  }
+                  SomeAlerts.fClose();
+                });
               },
             ),
             Text(
