@@ -14,23 +14,20 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-<<<<<<< HEAD
+  camera: ^0.6.4+5
   shared_preferences: ^0.5.12+2
   http: ^0.12.2
   fluttertoast: ^7.1.1
   cupertino_icons: ^0.1.2
   flutter_easyloading: ^2.1.3
-=======
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
->>>>>>> 6c39b99c99c14e832414ec1f4d48295005aabb5d
+  path_provider: ^1.6.27
+  path: ^1.7.0
 
 dev_dependencies:
   flutter_test:

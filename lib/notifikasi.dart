@@ -1,7 +1,6 @@
-import 'package:filterin/navbar.dart';
+import 'package:filterin/appbar.dart';
 import 'package:filterin/setorsampah.dart';
 import 'package:flutter/material.dart';
-import 'package:filterin/appbar.dart';
 
 class Notifikasi extends StatelessWidget {
   @override
@@ -10,9 +9,7 @@ class Notifikasi extends StatelessWidget {
         child: new Scaffold(
             appBar: new FilterAppBar(),
             body: Container(
-                child:
-                    new ListView(physics: ClampingScrollPhysics(), children: <
-                        Widget>[
+                child: new ListView(physics: ClampingScrollPhysics(), children: <Widget>[
               new Container(
                   padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 25.0),
                   color: Colors.white,
@@ -46,8 +43,7 @@ class Notifikasi extends StatelessWidget {
                   textColor: Colors.white,
                   color: Color(0xff84c263),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SetorSampah()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SetorSampah()));
                   },
                   icon: Image.asset(
                     "asset/setorsampah.png",
@@ -111,26 +107,19 @@ Widget _buildSaldo() {
                   end: Alignment.bottomCenter,
                   colors: [const Color(0xff84c263), const Color(0xff84c263)],
                 ),
-                borderRadius: new BorderRadius.only(
-                    topLeft: new Radius.circular(3.0),
-                    topRight: new Radius.circular(3.0))),
+                borderRadius:
+                    new BorderRadius.only(topLeft: new Radius.circular(3.0), topRight: new Radius.circular(3.0))),
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 new Text(
                   "Saldo",
-                  style: new TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black,
-                      fontFamily: "NeoSansBold"),
+                  style: new TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: "NeoSansBold"),
                 ),
                 new Container(
                   child: new Text(
                     "Rp. 120.000",
-                    style: new TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                        fontFamily: "NeoSansBold"),
+                    style: new TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: "NeoSansBold"),
                   ),
                 )
               ],
@@ -299,10 +288,7 @@ Widget _buildInfo() {
             }).toList());
           }
           return Center(
-            child: SizedBox(
-                width: 40.0,
-                height: 40.0,
-                child: const CircularProgressIndicator()),
+            child: SizedBox(width: 40.0, height: 40.0, child: const CircularProgressIndicator()),
           );
         },
       ));
@@ -355,10 +341,7 @@ Widget _rowInfo(Info info) {
             onPressed: () {},
             child: new Text(
               info.button,
-              style: new TextStyle(
-                  color: Colors.white,
-                  fontFamily: "NeoSansBold",
-                  fontSize: 12.0),
+              style: new TextStyle(color: Colors.white, fontFamily: "NeoSansBold", fontSize: 12.0),
             ),
           ),
         )
@@ -391,26 +374,22 @@ Future<List<Info>> fetchInfo() async {
   _infoList.add(new Info(
       image: "asset/images/berita1.jpg",
       title: "BERITA 1",
-      content:
-          "Warga sedang mendaur ulang sampah plastik menjadi tas yang lebih berguna.",
+      content: "Warga sedang mendaur ulang sampah plastik menjadi tas yang lebih berguna.",
       button: "SELENGKAPNYA"));
   _infoList.add(new Info(
       image: "asset/images/berita2.jpg",
       title: "BERITA 2",
-      content:
-          "Sampah botol bekas dapat menjadi berbagai macam kerajinan tangan.",
+      content: "Sampah botol bekas dapat menjadi berbagai macam kerajinan tangan.",
       button: "SELENGKAPNYA"));
   _infoList.add(new Info(
       image: "asset/images/berita3.jpg",
       title: "BERITA 3",
-      content:
-          "Sampah plastik berjenis botol terbukti sampah terbanyak yang dihasilkan oleh manusia.",
+      content: "Sampah plastik berjenis botol terbukti sampah terbanyak yang dihasilkan oleh manusia.",
       button: "SELENGKAPNYA"));
   _infoList.add(new Info(
       image: "asset/images/berita4.jpg",
       title: "BERITA 4",
-      content:
-          "Begini caranya mendaur ulang sampah plastik dari botol bekas minummu!",
+      content: "Begini caranya mendaur ulang sampah plastik dari botol bekas minummu!",
       button: "SELENGKAPNYA"));
   return new Future.delayed(new Duration(seconds: 3), () {
     return _infoList;
